@@ -27,7 +27,7 @@ jobs:
           $changedFiles = Get-Content changed_files.txt
           foreach ($file in $changedFiles) {
             # Assuming the extracted files are in the "unzipped" directory
-            $filePath = "unzipped/$file"
+            $filePath = "unzipped/zipped/$file"
             if (Test-Path $filePath) {
               Invoke-ScriptAnalyzer -Path $filePath -Severity Warning -EnableExit
             } else {
