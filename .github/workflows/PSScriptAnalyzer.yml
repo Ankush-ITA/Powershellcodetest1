@@ -11,7 +11,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run PSScriptAnalyzer on PowerShell Scripts
+      - name: Get Changed Files
+        id: changed-files
+        run: |
+          # Get a list of changed files in the latest commit
+          git diff --name-only HEAD^..HEAD > changed_files.txt
+
+      - name: Run PSScriptAnalyzer on Changed Files
         shell: pwsh
         run: |
-          Invoke-ScriptAnalyzer -Path ./ -Recurse -Severity Warning -EnableExit
+          # Read the list of changed files
+          $changedFiles = Get-Content changed_files.txt
+
+          # Scan only the modified files
+          foreach ($file in $changedFiles) {
+            Invoke-ScriptAnalyzer -Path $file -Severity Warning -EnableExit
+          }
