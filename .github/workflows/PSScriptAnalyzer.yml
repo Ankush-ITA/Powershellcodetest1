@@ -14,16 +14,12 @@ jobs:
       - name: Get Changed Files
         id: changed-files
         run: |
-          # Get a list of changed files in the latest commit
-          git log -1 --name-only --pretty=format: | tail -n +2 > changed_files.txt
+          git log -1 > changed_files.txt
 
       - name: Run PSScriptAnalyzer on Changed Files
         shell: pwsh
         run: |
-          # Read the list of changed files
           $changedFiles = Get-Content changed_files.txt
-
-          # Scan only the modified files
           foreach ($file in $changedFiles) {
             Invoke-ScriptAnalyzer -Path $file -Severity Warning -EnableExit
           }
