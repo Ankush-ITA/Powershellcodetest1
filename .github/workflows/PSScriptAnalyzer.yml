@@ -15,7 +15,7 @@ jobs:
         id: changed-files
         run: |
           # Get a list of changed files in the latest commit
-          git diff --name-only HEAD^..HEAD^1 > changed_files.txt
+          git log -1 --name-only --pretty=format: | tail -n +2 > changed_files.txt
 
       - name: Run PSScriptAnalyzer on Changed Files
         shell: pwsh
