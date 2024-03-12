@@ -16,10 +16,17 @@ jobs:
         run: |
           git log -1 --name-only --pretty=format: | tail -n +2 > changed_files.txt
 
+      - name: Unzip ZIP files
+        run: |
+          # Assuming your ZIP files are in a directory called "zipped"
+          mkdir unzipped
+          find . -type f -name "*.zip" -exec unzip -o {} -d unzipped \;
+
       - name: Run PSScriptAnalyzer on Changed Files
         shell: pwsh
         run: |
           $changedFiles = Get-Content changed_files.txt
           foreach ($file in $changedFiles) {
-            Invoke-ScriptAnalyzer -Path $file -Severity Warning -EnableExit
+            # Assuming the extracted files are in the "unzipped" directory
+            Invoke-ScriptAnalyzer -Path "unzipped/$file" -Severity Warning -EnableExit
           }
