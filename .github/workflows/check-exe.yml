@@ -1,0 +1,22 @@
+name: Check for .exe File
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check_exe:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Check for .exe file
+      run: |
+        if ls zipped/*.exe 1> /dev/null 2>&1; then
+          echo ".exe file found."
+        else
+          echo "No .exe file found."
+          exit 1
