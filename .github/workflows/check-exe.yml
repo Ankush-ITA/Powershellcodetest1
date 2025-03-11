@@ -20,3 +20,4 @@ jobs:
         else
           echo "No .exe file found."
           exit 1
+        fi
